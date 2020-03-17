@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Habbit tracker - develop youarself from today!</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.11.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.11.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.11.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.11.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.11.0/firebase-storage.js"></script>
+    <script defer src="/__/firebase/7.11.0/firebase-firestore.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="habbit-insert-box">
+        <h3>Postępy nawyku:</h3>
+        <input type="text" placeholder="Wprowadź nawyk" />
+      </div>
+      <div class="habbit-proggres">
+        <button class="prev"></button>
+        <div class="habbit-proggres__calendar-wrapper">
+          <div class="habbit-proggres__calendar">
+            <div class="month" id="month--1">
+              <header class="month__header">
+                <span class="month__header-name">Styczeń</span>
+                <span class="month__header-proggres">25/30</span>
+              </header>
+              <ul class="month__days-list">
+                <li class="month__days-list-item">
+                  <span class="day-no">1</span><span class="day-tag">nd</span><span class="circle"></span>
+                </li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+                <li class="month__days-list-item"><span class="day-no">1</span><span class="day-tag">nd</span></li>
+              </ul>
+            </div>
+            <div class="month" id="month--2">
+              <header class="month__header">2</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--3">
+              <header class="month__header">3</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--4">
+              <header class="month__header">4</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--5">
+              <header class="month__header">5</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--6">
+              <header class="month__header">6</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--7">
+              <header class="month__header">7</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--8">
+              <header class="month__header">8</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--9">
+              <header class="month__header">9</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--10">
+              <header class="month__header">10</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--11">
+              <header class="month__header">11</header>
+              <ul class="month__days-list"></ul>
+            </div>
+            <div class="month" id="month--12">
+              <header class="month__header">12</header>
+              <ul class="month__days-list"></ul>
+            </div>
+          </div>
+        </div>
+        <button class="next"></button>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

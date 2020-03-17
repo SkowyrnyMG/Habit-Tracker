@@ -1,0 +1,15 @@
+{
+  "name": "habbitTracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch-sass": "node-sass -w sass/style.scss public/style.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "4.13.1"
+  }
+}
