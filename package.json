@@ -4,12 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch-sass": "node-sass -w sass/style.scss public/style.css"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "watch-sass": "node-sass -w src/styles/sass/style.scss src/styles/style.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "node-sass": "4.13.1"
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0",
+    "node-sass": "4.13.1",
+    "parcel": "^1.12.4"
+  },
+  "dependencies": {
+    "firebase": "^7.11.0"
   }
 }

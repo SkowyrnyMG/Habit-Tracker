@@ -2,7 +2,7 @@ const nextBtn = document.querySelector('.next');
 const prevBtn = document.querySelector('.prev');
 const carouselBody = document.querySelector('.habbit-proggres__calendar');
 
-const carouselListeners = () => {
+const carousel = () => {
   let carouselPos = 0;
   const CAROUSEL_SHUFFLE_LENGTH = 287;
   const END_POS = 2583;
@@ -23,5 +23,4 @@ const carouselListeners = () => {
     carouselBody.style.transform = `translateX(-${carouselPos}px)`;
   });
 };
-
-carouselListeners();
+export { carousel };
