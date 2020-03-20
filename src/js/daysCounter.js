@@ -40,15 +40,21 @@ const renderDays = () => {
   allYearDays.forEach((month, index) => {
     const getMonth = document.querySelector(`#month--${index + 1} .month__days-list`);
 
-    month.forEach(day => {
+    month.forEach((day, dayIndex) => {
+      //add id
+      day.push(`${index}_${dayIndex}`);
+      //add default status
+      day.push('0');
       const newDayLink = document.createElement('li');
       newDayLink.className = 'month__days-list-item';
+      newDayLink.setAttribute('id', `${index}_${dayIndex}`);
       newDayLink.innerHTML = `<span class="day-no">${
         day[0]
       }</span><span class="day-tag">${day[1].toLowerCase()}</span><span class="circle"></span>`;
       getMonth.innerHTML += newDayLink.outerHTML;
     });
   });
+  return allYearDays;
 };
 
 const progressBar = () => {
