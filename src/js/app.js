@@ -1,37 +1,6 @@
 import { carousel } from './carousel';
 import { nameDays, renderDays, progressBar } from './daysCounter';
 
-const createFirebasePlaceholder = () => {
-  //   const app = firebase.app();
-  //   const db = firebase.firestore();
-  //   db.collection('users').add({
-  //     user1: nameDays()
-  //   });
-  //   const myPost = db.collection('users').doc('user');
-  //   myPost.get().then(doc => {
-  //     const data = doc.data();
-  //     console.log(data.testowy);
-  //   });
-};
-
-// const createHabbitStatus = () => {
-//   const months = document.querySelectorAll('.month__days-list');
-//   console.log(Array.from(months)[1]);
-//   const dayArr = nameDays();
-//   dayArr.forEach((month, indexMonth) => {
-//     const currMonthDOM = months[indexMonth];
-//     const currMonth = currMonthDOM.querySelectorAll('li');
-//     console.log(currMonth);
-//     month.forEach((day, indexDay) => {
-//       day.push(0);
-//       day.push(currMonth[indexDay]);
-//     });
-//   });
-//   return dayArr;
-// };
-
-// console.log(createHabbitStatus());
-
 const changeColor = (statusData, month, day, target) => {
   if (Number(statusData) === 0 || Number(statusData) === 2) {
     habbitDataBase[month][day][3] = 1;
@@ -43,12 +12,14 @@ const changeColor = (statusData, month, day, target) => {
 };
 
 const habbitDataBase = renderDays();
-const checkTargetStatus = () => {
+
+const checkTargetStatus = (user, curHabbit) => {
   const callendar = document.querySelector('.habbit-proggres__calendar');
 
   callendar.addEventListener('click', e => {
     const app = firebase.app();
     const db = firebase.firestore();
+
     const target = e.target;
     if (target.className != 'circle') {
       return;
@@ -59,31 +30,34 @@ const checkTargetStatus = () => {
     const month = splitID[0];
     const day = splitID[1];
     let currStatus = () => habbitDataBase[month][day][3];
-    console.log(currStatus);
+    // console.log(currStatus);
     changeColor(currStatus(), month, day, target);
 
     currStatus();
 
-    db.collection('users')
-      .doc('user1')
+    db.collection(user)
+      .doc(curHabbit)
       .update({
         [currDayID]: currStatus()
       });
   });
 };
 
-const getHabitStatus = () => {
+const getHabitStatus = (user, curHabbit) => {
   const app = firebase.app();
   const db = firebase.firestore();
+  const currentHabbit = db.collection(user).doc(curHabbit);
 
-  const currentUser = db.collection('users').doc('user1');
+  const habbitDisplay = document.querySelector('.current-habbit');
+  habbitDisplay.innerHTML = currentHabbit.id;
+  console.log(currentHabbit.id);
 
-  currentUser.get().then(doc => {
+  currentHabbit.get().then(doc => {
     const data = doc.data();
-    console.log(data);
+    // console.log(data);
     for (let [key, value] of Object.entries(data)) {
-      console.log(key);
-      let currStatus = (month, day) => habbitDataBase[month][day][3];
+      // console.log(key);
+      let currStatus = (month, day) => (habbitDataBase[month][day][3] = value);
       const splitID = key.split('_');
       const month = splitID[0];
       const day = splitID[1];
@@ -91,7 +65,7 @@ const getHabitStatus = () => {
       const wholeList = document.querySelectorAll('.month__days-list-item');
       const [target] = [...wholeList].filter(status => status.id == key);
 
-      console.log(currStatus(month, day));
+      // console.log(currStatus(month, day));
 
       if (Number(currStatus(month, day)) == 1) {
         target.lastChild.style.backgroundColor = '#1be009';
@@ -102,10 +76,122 @@ const getHabitStatus = () => {
   });
 };
 
-getHabitStatus();
+const checkIfUserLogged = () => {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    logInWindow.classList.add('login-box-hide');
+  }
+};
 
-checkTargetStatus();
-createFirebasePlaceholder();
+const logInWindow = document.querySelector('.login-box');
+const googleLoginBtn = document.querySelector('.btn-login');
+
+checkIfUserLogged();
+
+googleLoginBtn.addEventListener('click', () => {
+  googleLoginAndGetData();
+});
+
+const googleLoginAndGetData = () => {
+  const formHabbit = document.querySelector('.habbit-form');
+  const inputHabbit = document.getElementById('input-habbit');
+
+  const app = firebase.app();
+  const db = firebase.firestore();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  let user_ID;
+
+  firebase
+    .auth()
+    .signInWithPopup(provider)
+
+    .then(result => {
+      const user = result.user;
+      const uid = result.user.uid;
+      user_ID = uid;
+      console.log(user);
+      db.collection(uid)
+        .doc('0000000')
+        .set({
+          lastHabbit: ''
+        });
+      return uid;
+    })
+
+    .then(uid => {
+      const collectionSize = (uid, habbit) => {
+        // db.collection(uid)
+        //   .doc('0000000')
+        //   .get()
+        //   .then(doc => {
+        //     const data = doc.data();
+        //     return data.lastHabbit;
+        //   }).then(lastHabbit => {})
+
+        db.collection(uid)
+          .get()
+          .then(snap => {
+            const data = snap.docs[snap.docs.length - 1].id;
+            return [snap.size, data];
+          })
+          .then(([size, data]) => {
+            if (size > 1) {
+              console.log('it has a doc');
+
+              getHabitStatus(uid, data);
+              checkTargetStatus(uid, data);
+            } else {
+              console.log('it does not have a doc');
+
+              db.collection(uid)
+                .doc(`${habbit}`)
+                .set({});
+            }
+          });
+      };
+
+      db.collection(uid)
+        .get()
+        .then(snap => {
+          return snap.size;
+        })
+        .then(size => {
+          const callendar = document.querySelector('.habbit-proggres');
+          const errorInputArrow = document.querySelector('.error-arrow');
+          const errorInputInfo = document.querySelector('.error-info');
+          const habbitDisplay = document.querySelector('.current-habbit');
+
+          if (size > 1) {
+            collectionSize(uid);
+          } else {
+            callendar.classList.add('callendar-unactive');
+            errorInputArrow.classList.add('active');
+            errorInputInfo.classList.add('active');
+          }
+          formHabbit.addEventListener('submit', e => {
+            e.preventDefault();
+            callendar.classList.remove('callendar-unactive');
+            errorInputArrow.classList.remove('active');
+            errorInputInfo.classList.remove('active');
+            db.collection(uid)
+              .doc(`${inputHabbit.value}`)
+              .set({});
+            collectionSize(uid, inputHabbit.value);
+            checkTargetStatus(uid, inputHabbit.value);
+            habbitDisplay.innerHTML = inputHabbit.value;
+            db.collection(uid)
+              .doc('0000000')
+              .set({
+                lastHabbit: inputHabbit.value
+              });
+          });
+        });
+
+      checkIfUserLogged();
+    })
+    .catch(console.log);
+};
+
 progressBar();
 
 carousel();

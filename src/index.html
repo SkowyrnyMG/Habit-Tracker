@@ -17,13 +17,25 @@
     <!-- <script defer src="/__/firebase/init.js"></script> -->
 
     <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
+    <script src="https://kit.fontawesome.com/b308d33ad1.js" crossorigin="anonymous"></script>
   </head>
   <body>
+    <div class="login-box">
+      <h3>You have to be logged in to track your habbits!</h3>
+      <button class="btn btn-login">Login with <i class="fab fa-google"></i></button>
+    </div>
     <div class="wrapper">
       <div class="habbit-insert-box">
-        <h3>Habbit proggress:</h3>
-        <input type="text" placeholder="Your habbit" />
+        <h3>Current habbit: <span class="current-habbit"></span></h3>
+        <form action="" class="habbit-form">
+          <label class="input-label" for="input-habbit">
+            <input type="text" id="input-habbit" maxlength="25" placeholder="Insert new habbit" />
+            <span class="error-info">You have to add habbit to track!</span>
+            <i class="error-arrow fas fa-arrow-left"></i>
+          </label>
+        </form>
       </div>
       <div class="habbit-proggres">
         <button class="prev"></button>
@@ -169,6 +181,7 @@
       };
       firebase.initializeApp(firebaseConfig);
     </script>
+    <script src="js/login.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
