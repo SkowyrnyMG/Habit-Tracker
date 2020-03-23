@@ -27,6 +27,19 @@
       <button class="btn btn-login">Login with <i class="fab fa-google"></i></button>
     </div>
     <div class="wrapper">
+      <div class="habbit-placeholder">
+        <button class="habbit-placeholder__button">
+          <span class="habbit-placeholder__button-text">List</span>
+          <i class="habbit-placeholder__button-icon fa fa-arrow-down"></i>
+        </button>
+        <ul class="habbit-placeholder__habbit-list">
+          <!-- <li class="habbit-placeholder__habbit-list__item">Example1</li>
+          <li class="habbit-placeholder__habbit-list__item">Example2</li>
+          <li class="habbit-placeholder__habbit-list__item">Example3</li>
+          <li class="habbit-placeholder__habbit-list__item">Example4</li>
+          <li class="habbit-placeholder__habbit-list__item">Example5</li> -->
+        </ul>
+      </div>
       <div class="habbit-insert-box">
         <h3>Current habbit: <span class="current-habbit"></span></h3>
         <form action="" class="habbit-form">
@@ -181,7 +194,6 @@
       };
       firebase.initializeApp(firebaseConfig);
     </script>
-    <script src="js/login.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
