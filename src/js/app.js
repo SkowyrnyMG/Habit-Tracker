@@ -35,6 +35,9 @@ const checkTargetStatus = (user, curHabbit) => {
     let currStatus = () => habbitDataBase[month][day][3];
     changeColor(currStatus(), month, day, target);
 
+    const curMonthID = target.closest('.month').id;
+    updateMonthSummary(curMonthID, month);
+
     currStatus();
 
     db.collection(user)
@@ -43,6 +46,18 @@ const checkTargetStatus = (user, curHabbit) => {
         [currDayID]: currStatus()
       });
   });
+};
+
+const updateMonthSummary = (monthID, monthNo) => {
+  const monthSummary = habbitDataBase[monthNo].reduce((sum, curDay) => {
+    const curDayStatus = curDay[3];
+    if (curDayStatus === 1) {
+      sum += Number(curDayStatus);
+    }
+    return sum;
+  }, 0);
+  const monthStatusDisplay = document.querySelector(`#${monthID} .progress-status`);
+  monthStatusDisplay.innerHTML = monthSummary;
 };
 
 const getHabitStatus = (user, curHabbit) => {
@@ -67,6 +82,11 @@ const getHabitStatus = (user, curHabbit) => {
       } else if (Number(currStatus(month, day)) == 2) {
         target.lastChild.style.backgroundColor = '#ff0000';
       }
+
+      const allMonths = document.querySelectorAll('.month');
+      allMonths.forEach((curMonth, index) => {
+        updateMonthSummary(curMonth.id, index);
+      });
     }
   });
 };
