@@ -5,7 +5,8 @@ const carouselBody = document.querySelector('.habbit-proggres__calendar');
 const carousel = () => {
   let carouselPos = 0;
   const CAROUSEL_SHUFFLE_LENGTH = 287;
-  const END_POS = 2583;
+  let END_POS = 2583;
+
   nextBtn.addEventListener('click', () => {
     if (carouselPos < END_POS) {
       carouselPos += CAROUSEL_SHUFFLE_LENGTH;

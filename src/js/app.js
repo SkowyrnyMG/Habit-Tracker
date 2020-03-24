@@ -33,7 +33,6 @@ const checkTargetStatus = (user, curHabbit) => {
     const month = splitID[0];
     const day = splitID[1];
     let currStatus = () => habbitDataBase[month][day][3];
-    // console.log(currStatus);
     changeColor(currStatus(), month, day, target);
 
     currStatus();
@@ -51,13 +50,10 @@ const getHabitStatus = (user, curHabbit) => {
 
   const habbitDisplay = document.querySelector('.current-habbit');
   habbitDisplay.innerHTML = currentHabbit.id;
-  console.log(currentHabbit.id);
 
   currentHabbit.get().then(doc => {
     const data = doc.data();
-    // console.log(data);
     for (let [key, value] of Object.entries(data)) {
-      // console.log(key);
       let currStatus = (month, day) => (habbitDataBase[month][day][3] = value);
       const splitID = key.split('_');
       const month = splitID[0];
@@ -65,8 +61,6 @@ const getHabitStatus = (user, curHabbit) => {
       currStatus(month, day);
       const wholeList = document.querySelectorAll('.month__days-list-item');
       const [target] = [...wholeList].filter(status => status.id == key);
-
-      // console.log(currStatus(month, day));
 
       if (Number(currStatus(month, day)) == 1) {
         target.lastChild.style.backgroundColor = '#1be009';
@@ -80,8 +74,6 @@ const getHabitStatus = (user, curHabbit) => {
 const checkIfUserLogged = () => {
   auth.onAuthStateChanged(user => {
     if (user) {
-      console.log(user);
-      console.log(user.uid);
       habbitController(user.uid);
       renderHabbitList(user.uid);
       logInWindow.classList.remove('login-box-active');
@@ -109,13 +101,9 @@ const collectionSize = (uid, habbit) => {
         })
         .then(([size, data]) => {
           if (size > 1) {
-            console.log('it has a doc');
-
             getHabitStatus(uid, data);
             checkTargetStatus(uid, data);
           } else {
-            console.log('it does not have a doc');
-
             db.collection(uid)
               .doc(`${habbit}`)
               .set({});
@@ -135,12 +123,26 @@ const renderHabbitList = userID => {
           const habbitListItem = document.createElement('li');
           habbitListItem.className = 'habbit-placeholder__habbit-list__item';
           habbitListItem.value = `${doc.id}`;
-          console.log(doc);
           habbitListItem.innerHTML = doc.id;
           habbitListHolder.appendChild(habbitListItem);
         }
       });
+    })
+    .then(() => {
+      habbitListNavigation(userID);
     });
+};
+
+const habbitListNavigation = userID => {
+  habbitListHolder.addEventListener('click', e => {
+    const habbitName = e.target.textContent;
+    db.collection(userID)
+      .doc(DEFAULT_DOC)
+      .update({
+        lastHabbit: habbitName
+      })
+      .then(() => location.reload());
+  });
 };
 
 const habbitController = uid => {
@@ -204,6 +206,15 @@ const googleLoginAndGetData = () => {
     .catch(console.log);
 };
 
+const logUserOut = () => {
+  const logoutBtn = document.getElementById('logout');
+  logoutBtn.addEventListener('click', e => {
+    e.preventDefault();
+    auth.signOut();
+    location.reload();
+  });
+};
+
 habbitListBtn.addEventListener('click', () => {
   habbitListHolder.classList.toggle('habbit-list-active');
 });
@@ -216,6 +227,8 @@ checkIfUserLogged();
 googleLoginBtn.addEventListener('click', () => {
   googleLoginAndGetData();
 });
+
+logUserOut();
 
 progressBar();
 
